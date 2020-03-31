@@ -23,7 +23,7 @@ const scrap = async () =>{
     recordList.pop() //popping out last element
     console.log(recordList)
     await page.screenshot({ path: 'screenshots/wikipedia.png' }); //screenshot 
-    // browser.close();
+    browser.close();
 };
 
 scrap();

@@ -13,17 +13,17 @@ Two ways you can install puppeteer
 It's your wish to proceed with any of the above, I am going to move on with ```npm i puppeteer```.
 
 1. Import puppeteer 
-    ```
+    ```javascript
     const puppeteer =  require('puppeteer');
     ```
 2. Launch browser -> Open new page -> Goto the respective page
-    ```
+    ```javascript
     const browser = await puppeteer.launch({headless : false}); 
     const page = await browser.newPage();
     await page.goto('https://en.wikipedia.org/wiki/1896_Summer_Olympics', {waitUntil : 'domcontentloaded'}) // wait until page loads completely
     ```
 3. Scrapping the olympic medal table
-    ```
+    ```javascript
     const recordList = await page.$$eval('table.wikitable.sortable.plainrowheaders.jquery-tablesorter tbody tr',(trows) => {
         let rowList = []
         trows.forEach(row =>{
@@ -36,6 +36,7 @@ It's your wish to proceed with any of the above, I am going to move on with ```n
             record.bronze   = tdList[3];
             rowList.push(record)
         });
+        return rowList
     });
 
     recordList.pop() //popping out last element

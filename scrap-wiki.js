@@ -17,6 +17,7 @@ const scrap = async () =>{
             record.bronze   = tdList[3];
             rowList.push(record)
         });
+        return rowList;
     });
 
     recordList.pop() //popping out last element

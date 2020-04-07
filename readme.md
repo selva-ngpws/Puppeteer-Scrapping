@@ -1,6 +1,6 @@
 ### SCRAPPING TABLE FROM WIKIPEDIA USING PUPPETEER 
 
-1. To initialze a project ```npm init``` 
+1. Initialze the project with  ```npm init``` 
 2. Couple of questions will come regading the project just answer and proceed.
 
 Lets Move on to Puppeteer

@@ -9,6 +9,7 @@
   "author": "selva",
   "license": "ISC",
   "dependencies": {
+    "json2csv": "^5.0.0",
     "node": "^13.12.0",
     "puppeteer": "^2.1.1"
   }

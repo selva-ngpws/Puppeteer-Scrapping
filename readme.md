@@ -1,7 +1,7 @@
 ### SCRAPPING TABLE FROM WIKIPEDIA USING PUPPETEER 
 
 1. Initialze the project with  ```npm init``` 
-2. Couple of questions will come regading the project just answer and proceed.
+2. Couple of questions will come regarding the project just answer and proceed.
 
 Lets Move on to Puppeteer
 Two ways you can install puppeteer
@@ -18,28 +18,36 @@ It's your wish to proceed with any of the above, I am going to move on with ```n
     ```
 2. Launch browser -> Open new page -> Goto the respective page
     ```javascript
-    const browser = await puppeteer.launch({headless : false}); 
-    const page = await browser.newPage();
-    await page.goto('https://en.wikipedia.org/wiki/1896_Summer_Olympics', {waitUntil : 'domcontentloaded'}) // wait until page loads completely
+   const browser = await puppeteer.launch({headless : false}); //browser initiate
+    const page = await browser.newPage();  // opening a new blank page
+    await page.goto('https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic_by_country_and_territory', {waitUntil : 'domcontentloaded'}) // navigate to url and wait until page loads completely
     ```
-3. Scrapping the olympic medal table
+3. Scrapping the covid data from wikipedia table
     ```javascript
-    const recordList = await page.$$eval('table.wikitable.sortable.plainrowheaders.jquery-tablesorter tbody tr',(trows) => {
-        let rowList = []
-        trows.forEach(row =>{
-            let record = {'rank' : '','country' : '','gold' :'', 'silver' : '', 'bronze':''}
-            record.country  = row.querySelector('th').innerText; 
-            const tdList    = Array.from(row.querySelectorAll('td') , column => column.innerText); 
-            record.rank     = tdList[0];
-            record.gold     = tdList[1];
-            record.silver   = tdList[2];
-            record.bronze   = tdList[3];
-            rowList.push(record)
-        });
-        return rowList
-    });
-
-    recordList.pop() //popping out last element
+    const recordList = await page.$$eval('div#covid19-container table#thetable tbody tr',(trows)=>{
+        let rowList = []    
+        trows.forEach(row => {
+                let record = {'country' : '','cases' :'', 'death' : '', 'recovered':''}
+                record.country = row.querySelector('a').innerText; // (tr < th < a) anchor tag text contains country name
+                const tdList = Array.from(row.querySelectorAll('td'), column => column.innerText); // getting textvalue of each column of a row and adding them to a list.
+                record.cases = tdList[0];       // first column contains number of cases
+                record.death = tdList[1];       // second column contains number of deaths
+                record.recovered = tdList[2];   // third column contains number of recovered
+                if(tdList.length >= 3){         // push only valid rows.
+                    rowList.push(record)
+                }
+            });
+        return rowList;
+    })
     console.log(recordList)
     await page.screenshot({ path: 'screenshots/wikipedia.png' }); //screenshot 
+    browser.close();
+    ```
+4. Storing in File
+    ```javascript
+    // writting to a file 
+    fs.writeFile('covid-19.json',JSON.stringify(recordList, null, 2),(err)=>{
+        if(err){console.log(err)}
+        else{console.log('Saved Successfully!')}
+    })
     ```

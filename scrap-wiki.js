@@ -25,5 +25,5 @@ const scrap = async () =>{
     await page.screenshot({ path: 'screenshots/wikipedia.png' }); //screenshot 
     browser.close();
 };
-
+ 
 scrap();

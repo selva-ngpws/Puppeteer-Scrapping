@@ -26,4 +26,4 @@ const scrap = async () =>{
     browser.close();
 };
 
-scrap();
+scrap(); // function to be called
